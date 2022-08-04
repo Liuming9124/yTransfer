@@ -49,6 +49,9 @@ namespace yTransfer
             this.lblUrl = new System.Windows.Forms.Label();
             this.pgList = new System.Windows.Forms.TabPage();
             this.pgSetting = new System.Windows.Forms.TabPage();
+            this.lblVideoTitle = new System.Windows.Forms.Label();
+            this.lblVideoInfo = new System.Windows.Forms.Label();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.page.SuspendLayout();
             this.pgDownload.SuspendLayout();
             this.gpInfo.SuspendLayout();
@@ -90,6 +93,8 @@ namespace yTransfer
             // 
             // gpInfo
             // 
+            this.gpInfo.Controls.Add(this.lblVideoInfo);
+            this.gpInfo.Controls.Add(this.lblVideoTitle);
             this.gpInfo.Controls.Add(this.btnMp4);
             this.gpInfo.Controls.Add(this.pgbMp4);
             this.gpInfo.Controls.Add(this.btnMp3Download);
@@ -113,7 +118,7 @@ namespace yTransfer
             // btnMp4
             // 
             this.btnMp4.Font = new System.Drawing.Font("新細明體", 12F);
-            this.btnMp4.Location = new System.Drawing.Point(688, 289);
+            this.btnMp4.Location = new System.Drawing.Point(698, 310);
             this.btnMp4.Name = "btnMp4";
             this.btnMp4.Size = new System.Drawing.Size(66, 31);
             this.btnMp4.TabIndex = 16;
@@ -122,7 +127,7 @@ namespace yTransfer
             // 
             // pgbMp4
             // 
-            this.pgbMp4.Location = new System.Drawing.Point(27, 289);
+            this.pgbMp4.Location = new System.Drawing.Point(37, 310);
             this.pgbMp4.Name = "pgbMp4";
             this.pgbMp4.Size = new System.Drawing.Size(655, 31);
             this.pgbMp4.TabIndex = 15;
@@ -130,7 +135,7 @@ namespace yTransfer
             // btnMp3Download
             // 
             this.btnMp3Download.Font = new System.Drawing.Font("新細明體", 12F);
-            this.btnMp3Download.Location = new System.Drawing.Point(688, 252);
+            this.btnMp3Download.Location = new System.Drawing.Point(698, 273);
             this.btnMp3Download.Name = "btnMp3Download";
             this.btnMp3Download.Size = new System.Drawing.Size(66, 31);
             this.btnMp3Download.TabIndex = 14;
@@ -139,7 +144,7 @@ namespace yTransfer
             // 
             // pgbMP3
             // 
-            this.pgbMP3.Location = new System.Drawing.Point(27, 252);
+            this.pgbMP3.Location = new System.Drawing.Point(37, 273);
             this.pgbMP3.Name = "pgbMP3";
             this.pgbMP3.Size = new System.Drawing.Size(655, 31);
             this.pgbMP3.TabIndex = 12;
@@ -147,18 +152,19 @@ namespace yTransfer
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("新細明體", 12F);
-            this.button1.Location = new System.Drawing.Point(688, 157);
+            this.button1.Location = new System.Drawing.Point(696, 190);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(66, 31);
             this.button1.TabIndex = 12;
             this.button1.Text = "FP";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // lblSaveTo
             // 
             this.lblSaveTo.AutoSize = true;
             this.lblSaveTo.Font = new System.Drawing.Font("新細明體", 15F);
-            this.lblSaveTo.Location = new System.Drawing.Point(33, 161);
+            this.lblSaveTo.Location = new System.Drawing.Point(41, 194);
             this.lblSaveTo.Name = "lblSaveTo";
             this.lblSaveTo.Size = new System.Drawing.Size(69, 20);
             this.lblSaveTo.TabIndex = 12;
@@ -172,7 +178,7 @@ namespace yTransfer
             "Default",
             "English",
             "Chinese (traditional)"});
-            this.cbFilePath.Location = new System.Drawing.Point(117, 158);
+            this.cbFilePath.Location = new System.Drawing.Point(125, 191);
             this.cbFilePath.Name = "cbFilePath";
             this.cbFilePath.Size = new System.Drawing.Size(565, 28);
             this.cbFilePath.TabIndex = 13;
@@ -181,7 +187,7 @@ namespace yTransfer
             // 
             this.lblVideoQuality.AutoSize = true;
             this.lblVideoQuality.Font = new System.Drawing.Font("新細明體", 15F);
-            this.lblVideoQuality.Location = new System.Drawing.Point(418, 69);
+            this.lblVideoQuality.Location = new System.Drawing.Point(419, 137);
             this.lblVideoQuality.Name = "lblVideoQuality";
             this.lblVideoQuality.Size = new System.Drawing.Size(114, 20);
             this.lblVideoQuality.TabIndex = 10;
@@ -195,7 +201,7 @@ namespace yTransfer
             "Default",
             "English",
             "Chinese (traditional)"});
-            this.comboBox1.Location = new System.Drawing.Point(554, 64);
+            this.comboBox1.Location = new System.Drawing.Point(555, 132);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(200, 28);
             this.comboBox1.TabIndex = 11;
@@ -204,7 +210,7 @@ namespace yTransfer
             // 
             this.subtitleCheck.AutoSize = true;
             this.subtitleCheck.Font = new System.Drawing.Font("新細明體", 15F);
-            this.subtitleCheck.Location = new System.Drawing.Point(27, 68);
+            this.subtitleCheck.Location = new System.Drawing.Point(28, 136);
             this.subtitleCheck.Name = "subtitleCheck";
             this.subtitleCheck.Size = new System.Drawing.Size(88, 24);
             this.subtitleCheck.TabIndex = 4;
@@ -216,7 +222,7 @@ namespace yTransfer
             // 
             this.lblLanguage.AutoSize = true;
             this.lblLanguage.Font = new System.Drawing.Font("新細明體", 15F);
-            this.lblLanguage.Location = new System.Drawing.Point(121, 69);
+            this.lblLanguage.Location = new System.Drawing.Point(122, 137);
             this.lblLanguage.Name = "lblLanguage";
             this.lblLanguage.Size = new System.Drawing.Size(74, 20);
             this.lblLanguage.TabIndex = 6;
@@ -230,7 +236,7 @@ namespace yTransfer
             "Default",
             "English",
             "Chinese (traditional)"});
-            this.cbList.Location = new System.Drawing.Point(201, 64);
+            this.cbList.Location = new System.Drawing.Point(202, 132);
             this.cbList.Name = "cbList";
             this.cbList.Size = new System.Drawing.Size(166, 28);
             this.cbList.TabIndex = 8;
@@ -276,6 +282,28 @@ namespace yTransfer
             this.pgSetting.Text = "Setting";
             this.pgSetting.UseVisualStyleBackColor = true;
             // 
+            // lblVideoTitle
+            // 
+            this.lblVideoTitle.AutoSize = true;
+            this.lblVideoTitle.Font = new System.Drawing.Font("新細明體", 15F);
+            this.lblVideoTitle.Location = new System.Drawing.Point(33, 45);
+            this.lblVideoTitle.Name = "lblVideoTitle";
+            this.lblVideoTitle.Size = new System.Drawing.Size(155, 20);
+            this.lblVideoTitle.TabIndex = 17;
+            this.lblVideoTitle.Text = "Video Infomation : ";
+            this.lblVideoTitle.Click += new System.EventHandler(this.lblVideoTitle_Click);
+            // 
+            // lblVideoInfo
+            // 
+            this.lblVideoInfo.AutoSize = true;
+            this.lblVideoInfo.Font = new System.Drawing.Font("新細明體", 15F);
+            this.lblVideoInfo.Location = new System.Drawing.Point(198, 45);
+            this.lblVideoInfo.Name = "lblVideoInfo";
+            this.lblVideoInfo.Size = new System.Drawing.Size(114, 20);
+            this.lblVideoInfo.TabIndex = 18;
+            this.lblVideoInfo.Text = "Video Quality";
+            this.lblVideoInfo.Click += new System.EventHandler(this.label2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -315,6 +343,9 @@ namespace yTransfer
         private System.Windows.Forms.ProgressBar pgbMp4;
         private System.Windows.Forms.Button btnMp3Download;
         private System.Windows.Forms.ProgressBar pgbMP3;
+        private System.Windows.Forms.Label lblVideoInfo;
+        private System.Windows.Forms.Label lblVideoTitle;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
 

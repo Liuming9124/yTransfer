@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace yTransfer
 {
@@ -25,29 +26,19 @@ namespace yTransfer
 
         private void mp3Btn_Click(object sender, EventArgs e)
         {
-            string url = urlBox.Text;
-            Boolean sub = subtitleCheck.Checked;
-            if (sub)
-            {
-                string lan = cbList.Text;
-                System.Console.WriteLine($"{url}");
-                System.Console.WriteLine(sub);
-                System.Console.WriteLine(lan);
-            }
-            else
-            {
-                System.Console.WriteLine($"{url}");
-            }
+
         }
-
-
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            gpInfo.Visible = true;
             var search = new media();
-            search.urlToMedia(urlBox.Text);
+
+            if (search.urlToMedia(urlBox.Text))
+            {
+                lblVideoInfo.Text = search.title;
+            }
             
+            gpInfo.Visible = true;
         }
 
         private void pgbMP3_Click(object sender, EventArgs e)
@@ -57,6 +48,30 @@ namespace yTransfer
 
         private void subtitleCheck_CheckedChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblVideoTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderDlg = new FolderBrowserDialog();
+            folderDlg.ShowNewFolderButton = true;
+            // Show the FolderBrowserDialog.  
+            DialogResult result = folderDlg.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                cbFilePath.Text = folderDlg.SelectedPath;
+                Environment.SpecialFolder root = folderDlg.RootFolder;
+            }
 
         }
     }
