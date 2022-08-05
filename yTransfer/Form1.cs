@@ -35,10 +35,14 @@ namespace yTransfer
 
             if (search.urlToMedia(urlBox.Text))
             {
-                lblVideoInfo.Text = search.title;
+                gpInfo.Visible = true;
             }
+            else
+            {
+                gpInfo.Visible = false;
+            }
+            lblVideoInfo.Text = search.title;
             
-            gpInfo.Visible = true;
         }
 
         private void pgbMP3_Click(object sender, EventArgs e)
@@ -69,10 +73,15 @@ namespace yTransfer
             DialogResult result = folderDlg.ShowDialog();
             if (result == DialogResult.OK)
             {
-                cbFilePath.Text = folderDlg.SelectedPath;
+                cbFilePath.Text = folderDlg.SelectedPath + "\\";
                 Environment.SpecialFolder root = folderDlg.RootFolder;
             }
 
+        }
+
+        private void btnMp4_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

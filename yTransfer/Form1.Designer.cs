@@ -52,6 +52,7 @@ namespace yTransfer
             this.lblVideoTitle = new System.Windows.Forms.Label();
             this.lblVideoInfo = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.page.SuspendLayout();
             this.pgDownload.SuspendLayout();
             this.gpInfo.SuspendLayout();
@@ -124,6 +125,7 @@ namespace yTransfer
             this.btnMp4.TabIndex = 16;
             this.btnMp4.Text = "ＭＰ4";
             this.btnMp4.UseVisualStyleBackColor = true;
+            this.btnMp4.Click += new System.EventHandler(this.btnMp4_Click);
             // 
             // pgbMp4
             // 
@@ -346,6 +348,7 @@ namespace yTransfer
         private System.Windows.Forms.Label lblVideoInfo;
         private System.Windows.Forms.Label lblVideoTitle;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 
