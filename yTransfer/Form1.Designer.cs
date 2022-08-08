@@ -33,6 +33,8 @@ namespace yTransfer
             this.page = new System.Windows.Forms.TabControl();
             this.pgDownload = new System.Windows.Forms.TabPage();
             this.gpInfo = new System.Windows.Forms.GroupBox();
+            this.lblVideoInfo = new System.Windows.Forms.Label();
+            this.lblVideoTitle = new System.Windows.Forms.Label();
             this.btnMp4 = new System.Windows.Forms.Button();
             this.pgbMp4 = new System.Windows.Forms.ProgressBar();
             this.btnMp3Download = new System.Windows.Forms.Button();
@@ -41,7 +43,7 @@ namespace yTransfer
             this.lblSaveTo = new System.Windows.Forms.Label();
             this.cbFilePath = new System.Windows.Forms.ComboBox();
             this.lblVideoQuality = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbVq = new System.Windows.Forms.ComboBox();
             this.subtitleCheck = new System.Windows.Forms.CheckBox();
             this.lblLanguage = new System.Windows.Forms.Label();
             this.cbList = new System.Windows.Forms.ComboBox();
@@ -49,8 +51,6 @@ namespace yTransfer
             this.lblUrl = new System.Windows.Forms.Label();
             this.pgList = new System.Windows.Forms.TabPage();
             this.pgSetting = new System.Windows.Forms.TabPage();
-            this.lblVideoTitle = new System.Windows.Forms.Label();
-            this.lblVideoInfo = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.page.SuspendLayout();
@@ -65,6 +65,7 @@ namespace yTransfer
             this.urlBox.Name = "urlBox";
             this.urlBox.Size = new System.Drawing.Size(542, 31);
             this.urlBox.TabIndex = 1;
+            this.urlBox.TextChanged += new System.EventHandler(this.urlBox_TextChanged);
             // 
             // page
             // 
@@ -104,7 +105,7 @@ namespace yTransfer
             this.gpInfo.Controls.Add(this.lblSaveTo);
             this.gpInfo.Controls.Add(this.cbFilePath);
             this.gpInfo.Controls.Add(this.lblVideoQuality);
-            this.gpInfo.Controls.Add(this.comboBox1);
+            this.gpInfo.Controls.Add(this.cbVq);
             this.gpInfo.Controls.Add(this.subtitleCheck);
             this.gpInfo.Controls.Add(this.lblLanguage);
             this.gpInfo.Controls.Add(this.cbList);
@@ -115,6 +116,28 @@ namespace yTransfer
             this.gpInfo.TabIndex = 11;
             this.gpInfo.TabStop = false;
             this.gpInfo.Text = "Result";
+            // 
+            // lblVideoInfo
+            // 
+            this.lblVideoInfo.AutoSize = true;
+            this.lblVideoInfo.Font = new System.Drawing.Font("新細明體", 15F);
+            this.lblVideoInfo.Location = new System.Drawing.Point(198, 45);
+            this.lblVideoInfo.Name = "lblVideoInfo";
+            this.lblVideoInfo.Size = new System.Drawing.Size(114, 20);
+            this.lblVideoInfo.TabIndex = 18;
+            this.lblVideoInfo.Text = "Video Quality";
+            this.lblVideoInfo.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // lblVideoTitle
+            // 
+            this.lblVideoTitle.AutoSize = true;
+            this.lblVideoTitle.Font = new System.Drawing.Font("新細明體", 15F);
+            this.lblVideoTitle.Location = new System.Drawing.Point(33, 45);
+            this.lblVideoTitle.Name = "lblVideoTitle";
+            this.lblVideoTitle.Size = new System.Drawing.Size(155, 20);
+            this.lblVideoTitle.TabIndex = 17;
+            this.lblVideoTitle.Text = "Video Infomation : ";
+            this.lblVideoTitle.Click += new System.EventHandler(this.lblVideoTitle_Click);
             // 
             // btnMp4
             // 
@@ -195,18 +218,14 @@ namespace yTransfer
             this.lblVideoQuality.TabIndex = 10;
             this.lblVideoQuality.Text = "Video Quality";
             // 
-            // comboBox1
+            // cbVq
             // 
-            this.comboBox1.Font = new System.Drawing.Font("新細明體", 15F);
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Default",
-            "English",
-            "Chinese (traditional)"});
-            this.comboBox1.Location = new System.Drawing.Point(555, 132);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(200, 28);
-            this.comboBox1.TabIndex = 11;
+            this.cbVq.Font = new System.Drawing.Font("新細明體", 15F);
+            this.cbVq.FormattingEnabled = true;
+            this.cbVq.Location = new System.Drawing.Point(555, 132);
+            this.cbVq.Name = "cbVq";
+            this.cbVq.Size = new System.Drawing.Size(200, 28);
+            this.cbVq.TabIndex = 11;
             // 
             // subtitleCheck
             // 
@@ -284,28 +303,6 @@ namespace yTransfer
             this.pgSetting.Text = "Setting";
             this.pgSetting.UseVisualStyleBackColor = true;
             // 
-            // lblVideoTitle
-            // 
-            this.lblVideoTitle.AutoSize = true;
-            this.lblVideoTitle.Font = new System.Drawing.Font("新細明體", 15F);
-            this.lblVideoTitle.Location = new System.Drawing.Point(33, 45);
-            this.lblVideoTitle.Name = "lblVideoTitle";
-            this.lblVideoTitle.Size = new System.Drawing.Size(155, 20);
-            this.lblVideoTitle.TabIndex = 17;
-            this.lblVideoTitle.Text = "Video Infomation : ";
-            this.lblVideoTitle.Click += new System.EventHandler(this.lblVideoTitle_Click);
-            // 
-            // lblVideoInfo
-            // 
-            this.lblVideoInfo.AutoSize = true;
-            this.lblVideoInfo.Font = new System.Drawing.Font("新細明體", 15F);
-            this.lblVideoInfo.Location = new System.Drawing.Point(198, 45);
-            this.lblVideoInfo.Name = "lblVideoInfo";
-            this.lblVideoInfo.Size = new System.Drawing.Size(114, 20);
-            this.lblVideoInfo.TabIndex = 18;
-            this.lblVideoInfo.Text = "Video Quality";
-            this.lblVideoInfo.Click += new System.EventHandler(this.label2_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -340,7 +337,7 @@ namespace yTransfer
         private System.Windows.Forms.Label lblSaveTo;
         private System.Windows.Forms.ComboBox cbFilePath;
         private System.Windows.Forms.Label lblVideoQuality;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbVq;
         private System.Windows.Forms.Button btnMp4;
         private System.Windows.Forms.ProgressBar pgbMp4;
         private System.Windows.Forms.Button btnMp3Download;
