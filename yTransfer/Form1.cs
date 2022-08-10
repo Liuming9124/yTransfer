@@ -31,11 +31,6 @@ namespace yTransfer
         }
 
 
-        private void mp3Btn_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             
@@ -52,20 +47,12 @@ namespace yTransfer
             }
         }
 
-        private void pgbMP3_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void subtitleCheck_CheckedChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void lblVideoTitle_Click(object sender, EventArgs e)
         {
@@ -110,11 +97,11 @@ namespace yTransfer
             var bitRates = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Audio).Select(j => j.AudioBitrate);
             var unknownFormats = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.None).Select(j => j.Resolution);
 
-            
-            lblVideoInfo.Invoke((MethodInvoker)(() =>textchange(video.Title)));
+
+            title = video.Title;
+            lblVideoInfo.Invoke((MethodInvoker)(() =>lblVideoInfoTextChange(title)));
             foreach (var item in resolutions)
             {
-
                 if (!cbVq.Items.Contains(item))
                     cbVq.Invoke((MethodInvoker)(() => cbVq.Items.Add(item)));
             }
@@ -126,7 +113,7 @@ namespace yTransfer
             }
 
         }
-        private void textchange(string sender)
+        private void lblVideoInfoTextChange(string sender)
         {
             lblVideoInfo.Text = sender;
         }
@@ -153,25 +140,6 @@ namespace yTransfer
             System.Console.WriteLine("finish");
         }
 
-        private void gpInfo_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pgbMp4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnMp3Download_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-
-        }
 
         private void btnFilePath_Click(object sender, EventArgs e)
         {
@@ -184,6 +152,14 @@ namespace yTransfer
             }
         }
 
-        
+        private void bgSaveMp4_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+        private void btnMp3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

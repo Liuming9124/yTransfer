@@ -38,7 +38,7 @@ namespace yTransfer
             this.lblVideoTitle = new System.Windows.Forms.Label();
             this.btnMp4 = new System.Windows.Forms.Button();
             this.pgbMp4 = new System.Windows.Forms.ProgressBar();
-            this.btnMp3Download = new System.Windows.Forms.Button();
+            this.btnMp3 = new System.Windows.Forms.Button();
             this.pgbMP3 = new System.Windows.Forms.ProgressBar();
             this.btnFilePath = new System.Windows.Forms.Button();
             this.lblSaveTo = new System.Windows.Forms.Label();
@@ -53,6 +53,7 @@ namespace yTransfer
             this.pgSetting = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.bgUrlToVideo = new System.ComponentModel.BackgroundWorker();
+            this.bgSaveMp4 = new System.ComponentModel.BackgroundWorker();
             this.page.SuspendLayout();
             this.pgDownload.SuspendLayout();
             this.gpInfo.SuspendLayout();
@@ -65,7 +66,6 @@ namespace yTransfer
             this.urlBox.Name = "urlBox";
             this.urlBox.Size = new System.Drawing.Size(542, 31);
             this.urlBox.TabIndex = 1;
-            this.urlBox.TextChanged += new System.EventHandler(this.urlBox_TextChanged);
             // 
             // page
             // 
@@ -100,7 +100,7 @@ namespace yTransfer
             this.gpInfo.Controls.Add(this.lblVideoTitle);
             this.gpInfo.Controls.Add(this.btnMp4);
             this.gpInfo.Controls.Add(this.pgbMp4);
-            this.gpInfo.Controls.Add(this.btnMp3Download);
+            this.gpInfo.Controls.Add(this.btnMp3);
             this.gpInfo.Controls.Add(this.pgbMP3);
             this.gpInfo.Controls.Add(this.btnFilePath);
             this.gpInfo.Controls.Add(this.lblSaveTo);
@@ -116,7 +116,6 @@ namespace yTransfer
             this.gpInfo.TabIndex = 11;
             this.gpInfo.TabStop = false;
             this.gpInfo.Text = "Result";
-            this.gpInfo.Enter += new System.EventHandler(this.gpInfo_Enter);
             // 
             // filePathBox
             // 
@@ -130,7 +129,7 @@ namespace yTransfer
             // 
             this.lblVideoInfo.AutoSize = true;
             this.lblVideoInfo.Font = new System.Drawing.Font("新細明體", 15F);
-            this.lblVideoInfo.Location = new System.Drawing.Point(198, 45);
+            this.lblVideoInfo.Location = new System.Drawing.Point(206, 46);
             this.lblVideoInfo.Name = "lblVideoInfo";
             this.lblVideoInfo.Size = new System.Drawing.Size(37, 20);
             this.lblVideoInfo.TabIndex = 18;
@@ -140,7 +139,7 @@ namespace yTransfer
             // 
             this.lblVideoTitle.AutoSize = true;
             this.lblVideoTitle.Font = new System.Drawing.Font("新細明體", 15F);
-            this.lblVideoTitle.Location = new System.Drawing.Point(33, 45);
+            this.lblVideoTitle.Location = new System.Drawing.Point(41, 46);
             this.lblVideoTitle.Name = "lblVideoTitle";
             this.lblVideoTitle.Size = new System.Drawing.Size(155, 20);
             this.lblVideoTitle.TabIndex = 17;
@@ -164,18 +163,17 @@ namespace yTransfer
             this.pgbMp4.Name = "pgbMp4";
             this.pgbMp4.Size = new System.Drawing.Size(655, 31);
             this.pgbMp4.TabIndex = 15;
-            this.pgbMp4.Click += new System.EventHandler(this.pgbMp4_Click);
             // 
-            // btnMp3Download
+            // btnMp3
             // 
-            this.btnMp3Download.Font = new System.Drawing.Font("新細明體", 12F);
-            this.btnMp3Download.Location = new System.Drawing.Point(698, 273);
-            this.btnMp3Download.Name = "btnMp3Download";
-            this.btnMp3Download.Size = new System.Drawing.Size(66, 31);
-            this.btnMp3Download.TabIndex = 14;
-            this.btnMp3Download.Text = "ＭＰ３";
-            this.btnMp3Download.UseVisualStyleBackColor = true;
-            this.btnMp3Download.Click += new System.EventHandler(this.btnMp3Download_Click);
+            this.btnMp3.Font = new System.Drawing.Font("新細明體", 12F);
+            this.btnMp3.Location = new System.Drawing.Point(698, 273);
+            this.btnMp3.Name = "btnMp3";
+            this.btnMp3.Size = new System.Drawing.Size(66, 31);
+            this.btnMp3.TabIndex = 14;
+            this.btnMp3.Text = "ＭＰ３";
+            this.btnMp3.UseVisualStyleBackColor = true;
+            this.btnMp3.Click += new System.EventHandler(this.btnMp3_Click);
             // 
             // pgbMP3
             // 
@@ -228,7 +226,7 @@ namespace yTransfer
             // 
             this.subtitleCheck.AutoSize = true;
             this.subtitleCheck.Font = new System.Drawing.Font("新細明體", 15F);
-            this.subtitleCheck.Location = new System.Drawing.Point(28, 136);
+            this.subtitleCheck.Location = new System.Drawing.Point(45, 137);
             this.subtitleCheck.Name = "subtitleCheck";
             this.subtitleCheck.Size = new System.Drawing.Size(88, 24);
             this.subtitleCheck.TabIndex = 4;
@@ -240,7 +238,7 @@ namespace yTransfer
             // 
             this.lblLanguage.AutoSize = true;
             this.lblLanguage.Font = new System.Drawing.Font("新細明體", 15F);
-            this.lblLanguage.Location = new System.Drawing.Point(122, 137);
+            this.lblLanguage.Location = new System.Drawing.Point(139, 138);
             this.lblLanguage.Name = "lblLanguage";
             this.lblLanguage.Size = new System.Drawing.Size(74, 20);
             this.lblLanguage.TabIndex = 6;
@@ -254,7 +252,7 @@ namespace yTransfer
             "Default",
             "English",
             "Chinese (traditional)"});
-            this.cbList.Location = new System.Drawing.Point(202, 132);
+            this.cbList.Location = new System.Drawing.Point(219, 133);
             this.cbList.Name = "cbList";
             this.cbList.Size = new System.Drawing.Size(166, 28);
             this.cbList.TabIndex = 8;
@@ -303,7 +301,10 @@ namespace yTransfer
             // bgUrlToVideo
             // 
             this.bgUrlToVideo.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgUrlToVideo_DoWork);
-            this.bgUrlToVideo.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            // 
+            // bgSaveMp4
+            // 
+            this.bgSaveMp4.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgSaveMp4_DoWork);
             // 
             // Form1
             // 
@@ -341,13 +342,14 @@ namespace yTransfer
         private System.Windows.Forms.ComboBox cbVq;
         private System.Windows.Forms.Button btnMp4;
         private System.Windows.Forms.ProgressBar pgbMp4;
-        private System.Windows.Forms.Button btnMp3Download;
+        private System.Windows.Forms.Button btnMp3;
         private System.Windows.Forms.ProgressBar pgbMP3;
         private System.Windows.Forms.Label lblVideoInfo;
         private System.Windows.Forms.Label lblVideoTitle;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.ComponentModel.BackgroundWorker bgUrlToVideo;
         private System.Windows.Forms.TextBox filePathBox;
+        private System.ComponentModel.BackgroundWorker bgSaveMp4;
     }
 }
 
