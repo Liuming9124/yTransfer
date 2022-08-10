@@ -16,9 +16,9 @@ namespace yTransfer
 {
     public partial class Form1 : Form
     {
+        private YouTube youTube = YouTube.Default;
         private string url;
-        public string title;
-        public int timelens;
+        private string title;
         public string saveplace;
         public Form1()
         {
@@ -38,18 +38,18 @@ namespace yTransfer
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (urlToSource(urlBox.Text))
+            
+            url = urlBox.Text;
+            if (urlToSource(url))
             {
-                urlToVideo();
                 gpInfo.Visible = true;
+                bgUrlToVideo.RunWorkerAsync();
             }
             else
             {
                 MessageBox.Show("Couldnt found!!!");
                 gpInfo.Visible = false;
             }
-            //lblVideoInfo.Text = title;
-
         }
 
         private void pgbMP3_Click(object sender, EventArgs e)
@@ -72,20 +72,6 @@ namespace yTransfer
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderDlg = new FolderBrowserDialog();
-            folderDlg.ShowNewFolderButton = true;
-            // Show the FolderBrowserDialog.  
-            DialogResult result = folderDlg.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                cbFilePath.Text = folderDlg.SelectedPath + "\\";
-                saveplace = folderDlg.SelectedPath + "\\";
-                Environment.SpecialFolder root = folderDlg.RootFolder;
-            }
-
-        }
 
         private void btnMp4_Click(object sender, EventArgs e)
         {
@@ -100,11 +86,14 @@ namespace yTransfer
         public bool urlToSource(string e)
         {
             url = e;
-
+            
             var youTube = YouTube.Default;
             try
             {
-                var video = youTube.GetVideo(url); // gets a Video object with info about the video\
+                var video = youTube.GetVideo(url); // gets a Video object with info about the video
+
+
+                var videos = youTube.GetAllVideos(url);
                 return true;
             }
             catch (Exception)
@@ -112,34 +101,42 @@ namespace yTransfer
                 return false;
             }
         }
-        public void urlToVideo()
+        private void bgUrlToVideo_DoWork(object sender, DoWorkEventArgs e)
         {
-            var youTube = YouTube.Default;
-            var videos = youTube.GetAllVideos(url);
-
+            var videos = this.youTube.GetAllVideos(url);
+            var video = youTube.GetVideo(url);
             var videoInfos = Client.For(YouTube.Default).GetAllVideosAsync(url).GetAwaiter().GetResult();
             var resolutions = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Video).Select(j => j.Resolution);
             var bitRates = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Audio).Select(j => j.AudioBitrate);
             var unknownFormats = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.None).Select(j => j.Resolution);
 
+            
+            lblVideoInfo.Invoke((MethodInvoker)(() =>textchange(video.Title)));
             foreach (var item in resolutions)
             {
+
                 if (!cbVq.Items.Contains(item))
-                    cbVq.Items.Add(item);
+                    cbVq.Invoke((MethodInvoker)(() => cbVq.Items.Add(item)));
             }
-            
+
             if (cbVq.Items.Count > 0)
             {
                 cbVq.Invoke((MethodInvoker)(() => cbVq.Sorted = true));
                 cbVq.Invoke((MethodInvoker)(() => cbVq.SelectedIndex = 0));
             }
+
         }
+        private void textchange(string sender)
+        {
+            lblVideoInfo.Text = sender;
+        }
+
         public void saveVideo()
         {
             var youTube = YouTube.Default;
             var video = youTube.GetVideo(url); // gets a Video object with info about the video\
 
-            VideoInfo info = video.Info; // (Title, Author, LengthSeconds)
+
 
             string title = video.Title;
             lblVideoInfo.Text = title;
@@ -150,11 +147,43 @@ namespace yTransfer
             byte[] bytes = video.GetBytes();
             var stream = video.Stream();
 
-            System.Console.WriteLine(saveplace);
-            //File.WriteAllBytes("saveplace" + fullName, bytes);
+            //System.Console.WriteLine(filePathBox.Text+fullName);
+            File.WriteAllBytes(filePathBox.Text + fullName, bytes);
 
             System.Console.WriteLine("finish");
         }
 
+        private void gpInfo_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pgbMp4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMp3Download_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+        }
+
+        private void btnFilePath_Click(object sender, EventArgs e)
+        {
+            using (var folderDialog = new FolderBrowserDialog())
+            {
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                    filePathBox.Text = folderDialog.SelectedPath + "\\";
+                else
+                    filePathBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+        }
+
+        
     }
 }

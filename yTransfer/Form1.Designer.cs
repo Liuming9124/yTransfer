@@ -33,15 +33,15 @@ namespace yTransfer
             this.page = new System.Windows.Forms.TabControl();
             this.pgDownload = new System.Windows.Forms.TabPage();
             this.gpInfo = new System.Windows.Forms.GroupBox();
+            this.filePathBox = new System.Windows.Forms.TextBox();
             this.lblVideoInfo = new System.Windows.Forms.Label();
             this.lblVideoTitle = new System.Windows.Forms.Label();
             this.btnMp4 = new System.Windows.Forms.Button();
             this.pgbMp4 = new System.Windows.Forms.ProgressBar();
             this.btnMp3Download = new System.Windows.Forms.Button();
             this.pgbMP3 = new System.Windows.Forms.ProgressBar();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnFilePath = new System.Windows.Forms.Button();
             this.lblSaveTo = new System.Windows.Forms.Label();
-            this.cbFilePath = new System.Windows.Forms.ComboBox();
             this.lblVideoQuality = new System.Windows.Forms.Label();
             this.cbVq = new System.Windows.Forms.ComboBox();
             this.subtitleCheck = new System.Windows.Forms.CheckBox();
@@ -52,7 +52,7 @@ namespace yTransfer
             this.pgList = new System.Windows.Forms.TabPage();
             this.pgSetting = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.bgUrlToVideo = new System.ComponentModel.BackgroundWorker();
             this.page.SuspendLayout();
             this.pgDownload.SuspendLayout();
             this.gpInfo.SuspendLayout();
@@ -95,15 +95,15 @@ namespace yTransfer
             // 
             // gpInfo
             // 
+            this.gpInfo.Controls.Add(this.filePathBox);
             this.gpInfo.Controls.Add(this.lblVideoInfo);
             this.gpInfo.Controls.Add(this.lblVideoTitle);
             this.gpInfo.Controls.Add(this.btnMp4);
             this.gpInfo.Controls.Add(this.pgbMp4);
             this.gpInfo.Controls.Add(this.btnMp3Download);
             this.gpInfo.Controls.Add(this.pgbMP3);
-            this.gpInfo.Controls.Add(this.button1);
+            this.gpInfo.Controls.Add(this.btnFilePath);
             this.gpInfo.Controls.Add(this.lblSaveTo);
-            this.gpInfo.Controls.Add(this.cbFilePath);
             this.gpInfo.Controls.Add(this.lblVideoQuality);
             this.gpInfo.Controls.Add(this.cbVq);
             this.gpInfo.Controls.Add(this.subtitleCheck);
@@ -116,6 +116,15 @@ namespace yTransfer
             this.gpInfo.TabIndex = 11;
             this.gpInfo.TabStop = false;
             this.gpInfo.Text = "Result";
+            this.gpInfo.Enter += new System.EventHandler(this.gpInfo_Enter);
+            // 
+            // filePathBox
+            // 
+            this.filePathBox.Font = new System.Drawing.Font("新細明體", 15F);
+            this.filePathBox.Location = new System.Drawing.Point(116, 190);
+            this.filePathBox.Name = "filePathBox";
+            this.filePathBox.Size = new System.Drawing.Size(565, 31);
+            this.filePathBox.TabIndex = 19;
             // 
             // lblVideoInfo
             // 
@@ -123,10 +132,9 @@ namespace yTransfer
             this.lblVideoInfo.Font = new System.Drawing.Font("新細明體", 15F);
             this.lblVideoInfo.Location = new System.Drawing.Point(198, 45);
             this.lblVideoInfo.Name = "lblVideoInfo";
-            this.lblVideoInfo.Size = new System.Drawing.Size(114, 20);
+            this.lblVideoInfo.Size = new System.Drawing.Size(37, 20);
             this.lblVideoInfo.TabIndex = 18;
-            this.lblVideoInfo.Text = "Video Quality";
-            this.lblVideoInfo.Click += new System.EventHandler(this.label2_Click);
+            this.lblVideoInfo.Text = "title";
             // 
             // lblVideoTitle
             // 
@@ -156,6 +164,7 @@ namespace yTransfer
             this.pgbMp4.Name = "pgbMp4";
             this.pgbMp4.Size = new System.Drawing.Size(655, 31);
             this.pgbMp4.TabIndex = 15;
+            this.pgbMp4.Click += new System.EventHandler(this.pgbMp4_Click);
             // 
             // btnMp3Download
             // 
@@ -166,6 +175,7 @@ namespace yTransfer
             this.btnMp3Download.TabIndex = 14;
             this.btnMp3Download.Text = "ＭＰ３";
             this.btnMp3Download.UseVisualStyleBackColor = true;
+            this.btnMp3Download.Click += new System.EventHandler(this.btnMp3Download_Click);
             // 
             // pgbMP3
             // 
@@ -174,16 +184,16 @@ namespace yTransfer
             this.pgbMP3.Size = new System.Drawing.Size(655, 31);
             this.pgbMP3.TabIndex = 12;
             // 
-            // button1
+            // btnFilePath
             // 
-            this.button1.Font = new System.Drawing.Font("新細明體", 12F);
-            this.button1.Location = new System.Drawing.Point(696, 190);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(66, 31);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "FP";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnFilePath.Font = new System.Drawing.Font("新細明體", 12F);
+            this.btnFilePath.Location = new System.Drawing.Point(696, 190);
+            this.btnFilePath.Name = "btnFilePath";
+            this.btnFilePath.Size = new System.Drawing.Size(66, 31);
+            this.btnFilePath.TabIndex = 12;
+            this.btnFilePath.Text = "FP";
+            this.btnFilePath.UseVisualStyleBackColor = true;
+            this.btnFilePath.Click += new System.EventHandler(this.btnFilePath_Click);
             // 
             // lblSaveTo
             // 
@@ -194,19 +204,6 @@ namespace yTransfer
             this.lblSaveTo.Size = new System.Drawing.Size(69, 20);
             this.lblSaveTo.TabIndex = 12;
             this.lblSaveTo.Text = "Save To";
-            // 
-            // cbFilePath
-            // 
-            this.cbFilePath.Font = new System.Drawing.Font("新細明體", 15F);
-            this.cbFilePath.FormattingEnabled = true;
-            this.cbFilePath.Items.AddRange(new object[] {
-            "Default",
-            "English",
-            "Chinese (traditional)"});
-            this.cbFilePath.Location = new System.Drawing.Point(125, 191);
-            this.cbFilePath.Name = "cbFilePath";
-            this.cbFilePath.Size = new System.Drawing.Size(565, 28);
-            this.cbFilePath.TabIndex = 13;
             // 
             // lblVideoQuality
             // 
@@ -303,6 +300,11 @@ namespace yTransfer
             this.pgSetting.Text = "Setting";
             this.pgSetting.UseVisualStyleBackColor = true;
             // 
+            // bgUrlToVideo
+            // 
+            this.bgUrlToVideo.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgUrlToVideo_DoWork);
+            this.bgUrlToVideo.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -333,9 +335,8 @@ namespace yTransfer
         private System.Windows.Forms.CheckBox subtitleCheck;
         private System.Windows.Forms.Label lblLanguage;
         private System.Windows.Forms.ComboBox cbList;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnFilePath;
         private System.Windows.Forms.Label lblSaveTo;
-        private System.Windows.Forms.ComboBox cbFilePath;
         private System.Windows.Forms.Label lblVideoQuality;
         private System.Windows.Forms.ComboBox cbVq;
         private System.Windows.Forms.Button btnMp4;
@@ -345,7 +346,8 @@ namespace yTransfer
         private System.Windows.Forms.Label lblVideoInfo;
         private System.Windows.Forms.Label lblVideoTitle;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker bgUrlToVideo;
+        private System.Windows.Forms.TextBox filePathBox;
     }
 }
 
