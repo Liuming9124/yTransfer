@@ -9,8 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Windows.Controls;
-
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
 using VideoLibrary;
+
+
+
 
 namespace yTransfer
 {
@@ -62,7 +67,8 @@ namespace yTransfer
 
         private void btnMp4_Click(object sender, EventArgs e)
         {
-            saveVideo();
+            //saveToDisk();
+            bgSaveMp4.RunWorkerAsync();
         }
 
         private void urlBox_TextChanged(object sender, EventArgs e)
@@ -88,10 +94,25 @@ namespace yTransfer
                 return false;
             }
         }
+        private void btnFilePath_Click(object sender, EventArgs e)
+        {
+            using (var folderDialog = new FolderBrowserDialog())
+            {
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                    filePathBox.Text = folderDialog.SelectedPath + "\\";
+                else
+                    filePathBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+        }
+        private void lblVideoInfoTextChange(string sender)
+        {
+            lblVideoInfo.Text = sender;
+        }
+
         private void bgUrlToVideo_DoWork(object sender, DoWorkEventArgs e)
         {
-            var videos = this.youTube.GetAllVideos(url);
             var video = youTube.GetVideo(url);
+            var videos = youTube.GetAllVideos(url);
             var videoInfos = Client.For(YouTube.Default).GetAllVideosAsync(url).GetAwaiter().GetResult();
             var resolutions = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Video).Select(j => j.Resolution);
             var bitRates = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Audio).Select(j => j.AudioBitrate);
@@ -113,53 +134,59 @@ namespace yTransfer
             }
 
         }
-        private void lblVideoInfoTextChange(string sender)
-        {
-            lblVideoInfo.Text = sender;
-        }
 
-        public void saveVideo()
+        public void saveToDisk()
         {
             var youTube = YouTube.Default;
-            var video = youTube.GetVideo(url); // gets a Video object with info about the video\
-
-
+            var video = youTube.GetVideo(url);
 
             string title = video.Title;
-            lblVideoInfo.Text = title;
-            string fileExtension = video.FileExtension; //.mp4
-            string fullName = video.FullName;           //title.mp4
-            int resolution = video.Resolution;          //Video quality ex:(360)
+            VideoInfo info = video.Info;
+            string fileExtension = video.FileExtension;
+            string fullName = video.FullName; // same thing as title + fileExtension
+            int resolution = video.Resolution;
 
-            byte[] bytes = video.GetBytes();
+            var videos = youTube.GetAllVideos(url);
+            var videoInfos = Client.For(YouTube.Default).GetAllVideosAsync(url).GetAwaiter().GetResult();
+            var resolutions = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Video).Select(j => j.Resolution);
+            var maxResolution = videoInfos.First(i => i.Resolution == videoInfos.Max(j => j.Resolution));
+
+            //byte[] bytes = video.GetBytes();
+            byte[] max = maxResolution.GetBytes();
             var stream = video.Stream();
 
-            //System.Console.WriteLine(filePathBox.Text+fullName);
-            File.WriteAllBytes(filePathBox.Text + fullName, bytes);
+            //File.WriteAllBytes(saveplace + fullName, bytes);
+            File.WriteAllBytes(filePathBox.Text + fullName, max);
 
-            System.Console.WriteLine("finish");
+
+            System.Console.WriteLine("Finish");
         }
-
-
-        private void btnFilePath_Click(object sender, EventArgs e)
-        {
-            using (var folderDialog = new FolderBrowserDialog())
-            {
-                if (folderDialog.ShowDialog() == DialogResult.OK)
-                    filePathBox.Text = folderDialog.SelectedPath + "\\";
-                else
-                    filePathBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            }
-        }
-
         private void bgSaveMp4_DoWork(object sender, DoWorkEventArgs e)
         {
 
-        }
+            var youTube = YouTube.Default;
+            var video = youTube.GetVideo(url);
 
-        private void btnMp3_Click(object sender, EventArgs e)
-        {
+            string title = video.Title;
+            VideoInfo info = video.Info;
+            string fileExtension = video.FileExtension;
+            string fullName = video.FullName; // same thing as title + fileExtension
+            int resolution = video.Resolution;
 
+            var videos = youTube.GetAllVideos(url);
+            var videoInfos = Client.For(YouTube.Default).GetAllVideosAsync(url).GetAwaiter().GetResult();
+            var resolutions = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Video).Select(j => j.Resolution);
+            var maxResolution = videoInfos.First(i => i.Resolution == videoInfos.Max(j => j.Resolution));
+
+            //byte[] bytes = video.GetBytes();
+            byte[] max = maxResolution.GetBytes();
+            var stream = video.Stream();
+
+            //File.WriteAllBytes(saveplace + fullName, bytes);
+            File.WriteAllBytes(filePathBox.Text + fullName, max);
+
+
+            System.Console.WriteLine("Finish");
         }
     }
 }

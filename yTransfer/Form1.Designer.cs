@@ -33,13 +33,12 @@ namespace yTransfer
             this.page = new System.Windows.Forms.TabControl();
             this.pgDownload = new System.Windows.Forms.TabPage();
             this.gpInfo = new System.Windows.Forms.GroupBox();
+            this.guna2ProgressBar1 = new Guna.UI2.WinForms.Guna2ProgressBar();
             this.filePathBox = new System.Windows.Forms.TextBox();
             this.lblVideoInfo = new System.Windows.Forms.Label();
             this.lblVideoTitle = new System.Windows.Forms.Label();
             this.btnMp4 = new System.Windows.Forms.Button();
-            this.pgbMp4 = new System.Windows.Forms.ProgressBar();
             this.btnMp3 = new System.Windows.Forms.Button();
-            this.pgbMP3 = new System.Windows.Forms.ProgressBar();
             this.btnFilePath = new System.Windows.Forms.Button();
             this.lblSaveTo = new System.Windows.Forms.Label();
             this.lblVideoQuality = new System.Windows.Forms.Label();
@@ -95,13 +94,12 @@ namespace yTransfer
             // 
             // gpInfo
             // 
+            this.gpInfo.Controls.Add(this.guna2ProgressBar1);
             this.gpInfo.Controls.Add(this.filePathBox);
             this.gpInfo.Controls.Add(this.lblVideoInfo);
             this.gpInfo.Controls.Add(this.lblVideoTitle);
             this.gpInfo.Controls.Add(this.btnMp4);
-            this.gpInfo.Controls.Add(this.pgbMp4);
             this.gpInfo.Controls.Add(this.btnMp3);
-            this.gpInfo.Controls.Add(this.pgbMP3);
             this.gpInfo.Controls.Add(this.btnFilePath);
             this.gpInfo.Controls.Add(this.lblSaveTo);
             this.gpInfo.Controls.Add(this.lblVideoQuality);
@@ -116,6 +114,15 @@ namespace yTransfer
             this.gpInfo.TabIndex = 11;
             this.gpInfo.TabStop = false;
             this.gpInfo.Text = "Result";
+            // 
+            // guna2ProgressBar1
+            // 
+            this.guna2ProgressBar1.Location = new System.Drawing.Point(37, 310);
+            this.guna2ProgressBar1.Name = "guna2ProgressBar1";
+            this.guna2ProgressBar1.Size = new System.Drawing.Size(655, 30);
+            this.guna2ProgressBar1.TabIndex = 20;
+            this.guna2ProgressBar1.Text = "guna2ProgressBar1";
+            this.guna2ProgressBar1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             // 
             // filePathBox
             // 
@@ -157,13 +164,6 @@ namespace yTransfer
             this.btnMp4.UseVisualStyleBackColor = true;
             this.btnMp4.Click += new System.EventHandler(this.btnMp4_Click);
             // 
-            // pgbMp4
-            // 
-            this.pgbMp4.Location = new System.Drawing.Point(37, 310);
-            this.pgbMp4.Name = "pgbMp4";
-            this.pgbMp4.Size = new System.Drawing.Size(655, 31);
-            this.pgbMp4.TabIndex = 15;
-            // 
             // btnMp3
             // 
             this.btnMp3.Font = new System.Drawing.Font("新細明體", 12F);
@@ -173,14 +173,6 @@ namespace yTransfer
             this.btnMp3.TabIndex = 14;
             this.btnMp3.Text = "ＭＰ３";
             this.btnMp3.UseVisualStyleBackColor = true;
-            this.btnMp3.Click += new System.EventHandler(this.btnMp3_Click);
-            // 
-            // pgbMP3
-            // 
-            this.pgbMP3.Location = new System.Drawing.Point(37, 273);
-            this.pgbMP3.Name = "pgbMP3";
-            this.pgbMP3.Size = new System.Drawing.Size(655, 31);
-            this.pgbMP3.TabIndex = 12;
             // 
             // btnFilePath
             // 
@@ -341,15 +333,14 @@ namespace yTransfer
         private System.Windows.Forms.Label lblVideoQuality;
         private System.Windows.Forms.ComboBox cbVq;
         private System.Windows.Forms.Button btnMp4;
-        private System.Windows.Forms.ProgressBar pgbMp4;
         private System.Windows.Forms.Button btnMp3;
-        private System.Windows.Forms.ProgressBar pgbMP3;
         private System.Windows.Forms.Label lblVideoInfo;
         private System.Windows.Forms.Label lblVideoTitle;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.ComponentModel.BackgroundWorker bgUrlToVideo;
         private System.Windows.Forms.TextBox filePathBox;
         private System.ComponentModel.BackgroundWorker bgSaveMp4;
+        private Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1;
     }
 }
 
